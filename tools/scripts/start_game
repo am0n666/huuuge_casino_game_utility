@@ -1,6 +1,0 @@
-start_game()
-{
-source `pwd`/.settings
-am start -W com.huuuge.casino.slots/com.huuuge.casino.BootActivity
-clear
-}

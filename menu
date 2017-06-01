@@ -1,9 +1,23 @@
 #!/system/xbin/bash
 
-dir_list=( tools/test tools/scripts )
-error_found=0
+main_file=$(basename ${BASH_SOURCE[0]})
 
-for check_dir in ${dir_list[@]}
+if [ ! -e $main_file ]
+then
+	clear
+	echo
+	echo "You must run this tool from working directory!"
+	echo
+	exit 1
+fi
+
+required_dirs=(
+	"include/main"
+	"include/game_scripts"
+	"data"
+)
+
+for check_dir in ${required_dirs[@]}
 do
 	if [ ! -e $check_dir ]
 	then
@@ -13,23 +27,20 @@ do
 	fi
 done
 
-if [ ! -e profiles ]
-then
-	mkdir profiles
-	chmod 0700 profiles
-fi
+working_dirs=(
+	"logs"
+	"tmp"
+	"profiles"
+)
 
-if [ ! -e logs ]
-then
-	mkdir logs
-	chmod 0700 logs
-fi
-
-if [ ! -e tmp ]
-then
-	mkdir tmp
-	chmod 0700 tmp
-fi
+for check_dir in ${working_dirs[@]}
+do
+	if [ ! -e $check_dir ]
+	then
+		mkdir -p $check_dir
+		chmod 0700 $check_dir
+	fi
+done
 
 if [ $error_found == 1 ]
 then
@@ -40,14 +51,12 @@ fi
 
 clear
 
-chmod 0700 tools/scripts/*
-chmod 0700 tools/test/*
-chmod 0700 tools/completion/*
+for check_dir in ${required_dirs[@]}
+do
+	chmod 0700 $required_dirs/*
+done
 
-
-
-source tools/scripts/get_functions && get_functions && check_settings
-
+source include/main/check_settings && check_settings
 source .settings
 
 if [ "$GAME_INSTALLED" == "0" ]
@@ -59,17 +68,7 @@ then
 	exit
 fi
 
-ROOTU=$(isroot)
-
-if [ $ROOTU == 0 ]
-then
-	echo "Root permissions required"
-	echo
-	exit 0
-fi
-
-trap 'del_tmp' EXIT # calls deletetempfiles function on exit
-
-source `pwd`/.variables
+source $INCLUDE_DIR/main/get_func
+get_func "$INCLUDE_DIR/main"
 
 "$@"
