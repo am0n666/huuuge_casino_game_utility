@@ -1,0 +1,19 @@
+function get_func()
+{
+	source `pwd`/.settings
+
+
+	if [ -n "$1" ]
+	then
+		EXCLUDE=$(basename ${BASH_SOURCE[0]})
+		SOURCE_PATH="${1%/}"
+
+		for i in $SOURCE_PATH/* ; do
+			[[ -f "$i" ]] || continue
+			if [ $i != "$SOURCE_PATH/$EXCLUDE" ]
+		then
+			source $i
+		fi
+		done
+	fi
+}

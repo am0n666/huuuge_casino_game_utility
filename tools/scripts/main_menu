@@ -1,0 +1,49 @@
+#!/system/xbin/bash
+
+main_menu()
+{
+source `pwd`/.settings
+#source $SCRIPTS_DIR/del_tmp
+
+#trap 'del_tmp' EXIT # calls deletetempfiles function on exit
+
+
+while :
+do
+	
+	# Dialog utility to display options list
+	
+	OPTIONS=(
+	1 "Create backup"
+	2 "Restore"
+	3 "Clean"
+	15 "Wyjscie"
+	)
+	
+	dialog $dlg_begin --clear --backtitle "$DIALOG_BACKGROUND_TITLE" --title "MAIN MENU" \
+	--menu "Use [UP/DOWN] key to move" 20 $DLGSZER 14 \
+	"${OPTIONS[@]}" \
+	2> $TEMP_FILES_PATH/menuchoices.$$
+	
+	
+	
+	retopt=$?
+	choice=`cat $TEMP_FILES_PATH/menuchoices.$$`
+	
+	case $retopt in
+		
+		0) case $choice in
+		
+		1) ./menu backup_profile_dialog $PROFILES_DIR;;
+		2) ./menu restore_dialog $PROFILES_DIR;;
+		3) ./menu clean_profole $PROFILES_DIR;;
+		15) clear; exit 0;;
+		
+	esac ;;
+	
+	*)clear ; exit ;;
+esac
+
+done
+
+}

@@ -1,0 +1,30 @@
+setup_completion()
+{
+  source `pwd`/.settings
+
+  source $TESTS_DIR/if_dir_exists
+  BASH_COMPLETION_DIR=$PREFIX/etc/bash_completion.d
+  BCE=`if_dir_exists $BASH_COMPLETION_DIR`
+
+  if [ $BCE == "1" ]
+  then
+    cp $WORK_DIR/tools/completion/hcgu-completion.bash $BASH_COMPLETION_DIR/
+
+echo "source `echo $PWD`/.settings" > ~/bin/hcgu
+
+echo "OLDPWD=\$PWD" >> ~/bin/hcgu
+echo "cd \$WORK_DIR" >> ~/bin/hcgu
+echo "bash menu \"\$@\"" >> ~/bin/hcgu
+echo "cd \$OLDPWD" >> ~/bin/hcgu
+echo "clear" >> ~/bin/hcgu
+
+chmod u+x ~/bin/hcgu
+  else
+    exit 0
+  fi
+
+
+
+
+}
+

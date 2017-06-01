@@ -1,0 +1,13 @@
+WORK_DIR=/data/data/com.termux/files/home/huuuge_casino_game_utility
+TEMP_FILES_PATH=/data/data/com.termux/files/home/huuuge_casino_game_utility/tmp
+LOGS_FILES_PATH=/data/data/com.termux/files/home/huuuge_casino_game_utility/logs
+PROFILES_DIR=/data/data/com.termux/files/home/huuuge_casino_game_utility/profiles
+INCLUDE_DIR=/data/data/com.termux/files/home/huuuge_casino_game_utility/include
+DIALOG_BACKGROUND_TITLE='Huuuge Casino Game Utility'
+GAME_NAME=com.huuuge.casino.slots
+GAME_INSTALLED=1
+GAME_USER=10084
+GAME_DIR=/data/data/com.huuuge.casino.slots
+GAME_SAVE_DIR=/data/data/com.huuuge.casino.slots/files/save
+GAME_MEDIA_DIR=/sdcard/Android/data/com.huuuge.casino.slots
+GAME_CACHE_DIR=/sdcard/Android/data/com.huuuge.casino.slots/cache
