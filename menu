@@ -51,10 +51,8 @@ fi
 
 clear
 
-for check_dir in ${required_dirs[@]}
-do
-	chmod 0700 $required_dirs/*
-done
+chmod 0700 include/main/*
+chmod 0700 include/game_scripts/*
 
 source include/main/check_settings && check_settings
 source .settings
@@ -70,5 +68,6 @@ fi
 
 source $INCLUDE_DIR/main/get_func
 get_func "$INCLUDE_DIR/main"
+get_func "$INCLUDE_DIR/game_scripts"
 
 "$@"

@@ -1,0 +1,15 @@
+ clean_cache()
+{
+	SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+	source `pwd`/.settings
+	source $INCLUDE_DIR/main/get_func
+	get_func "$INCLUDE_DIR/main"
+	get_func "$INCLUDE_DIR/game_scripts"
+
+	if [ $(dir_exists $GAME_CACHE_DIR) == 1 ]
+	then
+		rm -Rf $GAME_CACHE_DIR
+	fi
+}
+

@@ -1,0 +1,36 @@
+#!/system/xbin/bash
+
+source `pwd`/.settings
+
+FUNCTION_NAME=$1
+TARGET=game_scripts
+
+echo "$FUNCTION_NAME()" > $INCLUDE_DIR/$TARGET/$FUNCTION_NAME
+
+export_line_to_file()
+{
+	echo "$1" >> $INCLUDE_DIR/$TARGET/$FUNCTION_NAME
+}
+
+L01="{"
+L02="	SCRIPT_NAME=\$(basename \${BASH_SOURCE[0]})"
+L03=""
+L04="	source \`pwd\`/.settings"
+L05="	source \$INCLUDE_DIR/main/get_func"
+L06="	get_func \"\$INCLUDE_DIR\main\""
+L07="	get_func \"\$INCLUDE_DIR\game_scripts\""
+L08="	"
+L09="}"
+
+export_line_to_file "$L01"
+export_line_to_file "$L02"
+export_line_to_file "$L03"
+export_line_to_file "$L04"
+export_line_to_file "$L05"
+export_line_to_file "$L06"
+export_line_to_file "$L07"
+export_line_to_file "$L08"
+export_line_to_file "$L08"
+export_line_to_file "$L08"
+export_line_to_file "$L09"
+

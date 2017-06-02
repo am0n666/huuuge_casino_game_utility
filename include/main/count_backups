@@ -1,0 +1,8 @@
+count_backups()
+{
+	source `pwd`/.settings
+	TARGET_DIR="$1"
+
+	COUNT=`find $TARGET_DIR -type f -name "*.tar" | wc -l`
+	echo $COUNT
+}

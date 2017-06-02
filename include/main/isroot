@@ -1,8 +1,8 @@
 isroot()
 {
-if [ "$(id -u)" == "0"  ]; then
-[ "$1" != "q" ] && echo 1
-else
-[ "$1" != "q" ] && echo 0
-fi
+	if [ "$(id -u)" == "0"  ]; then
+		[ "$1" != "q" ] && echo 1
+	else
+		[ "$1" != "q" ] && echo 0
+	fi
 }

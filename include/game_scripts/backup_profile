@@ -1,0 +1,38 @@
+backup_profile()
+{
+	SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+	source `pwd`/.settings
+	source $INCLUDE_DIR/main/get_func
+	get_func "$INCLUDE_DIR/main"
+	get_func "$INCLUDE_DIR/game_scripts"
+
+	if [ $# -eq 2 ]
+	then
+		TARGET_DIR=$(convert_path "$1")
+		
+		if [ $(dir_exists $TARGET_DIR) == 0 ]
+		then
+			ERROR_TEXT="Called from: $SCRIPT_NAME\n\nTarget directory not found:\n$TARGET_DIR"
+			log_error "$ERROR_TEXT"
+			show_error "$ERROR_TEXT"
+		else		
+			PROFILE_NAME=$2
+			FULL_BACKUP_PATH=$(echo $TARGET_DIR/$PROFILE_NAME".tar")
+			if [ $(file_exists $FULL_BACKUP_PATH) == 1 ]
+			then
+				rm $FULL_BACKUP_PATH
+			fi
+			SIZE=`du -sk $GAME_DIR | cut -f 1`
+			cd $GAME_DIR
+			(tar cfP - * | pv -n -s ${SIZE}k > $FULL_BACKUP_PATH) 2>&1 | dialog --gauge 'Creating backup file..' 6 50
+			echo $PROFILE_NAME > $TARGET_DIR/.last_backuped
+			cd $WORK_DIR
+			clear
+		fi
+	else
+		ERROR_TEXT="Called from: $SCRIPT_NAME\n\nThis function require two params\n\n1 - Target dir path for backup profile\n2 - Profile name  for backup"
+		log_error "$ERROR_TEXT"
+		show_error "$ERROR_TEXT"
+	fi
+}

@@ -1,0 +1,31 @@
+clean_profile()
+{
+	SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+	source `pwd`/.settings
+	source $INCLUDE_DIR/main/get_func
+	get_func "$INCLUDE_DIR\main"
+	get_func "$INCLUDE_DIR\game_scripts"
+	
+	PROFILE_NAME="default_profile"
+	FULL_BACKUP_PATH=$(echo $WORK_DIR/data/$PROFILE_NAME"")
+	if [ $(file_exists $FULL_BACKUP_PATH) == 0 ]
+	then
+		kill_game
+		cd $GAME_DIR
+		rm -Rf *
+		clean_cache
+		cd $WORK_DIR
+		clear
+	else
+		kill_game
+		cd $GAME_DIR
+		rm -Rf *
+		(pv -n $FULL_BACKUP_PATH | tar xf - -C $GAME_DIR ) 2>&1 | dialog --gauge "Restoring profile..." 6 50
+		chown -R $GAME_USER:$GAME_USER $GAME_DIR
+		clean_cache
+		cd $WORK_DIR
+		clear
+	fi
+
+}

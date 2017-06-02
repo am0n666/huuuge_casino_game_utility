@@ -1,0 +1,44 @@
+restore_profile()
+{
+	SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+	source `pwd`/.settings
+	source $INCLUDE_DIR/main/get_func
+	get_func "$INCLUDE_DIR\main"
+	get_func "$INCLUDE_DIR\game_scripts"
+	
+	if [ $# -eq 2 ]
+	then
+		BACKUPS_DIR="$(convert_path "$1")"
+		if [ $(dir_exists $BACKUPS_DIR) == 0 ]
+		then
+			ERROR_TEXT="Called from: $SCRIPT_NAME\n\nDirectory not found:\n$BACKUPS_DIR"
+			log_error "$ERROR_TEXT"
+			show_error "$ERROR_TEXT"
+		else		
+			PROFILE_NAME="$2"
+			FULL_BACKUP_PATH=$(echo $BACKUPS_DIR/$PROFILE_NAME".tar")
+			if [ $(file_exists $FULL_BACKUP_PATH) == 0 ]
+			then
+				ERROR_TEXT="Called from: $SCRIPT_NAME\n\nBackup not found in specified dir.\n$BACKUPS_DIR"
+				log_error "$ERROR_TEXT"
+				show_error "$ERROR_TEXT"
+			else
+				kill_game
+				cd $GAME_DIR
+				rm -Rf *
+				(pv -n $FULL_BACKUP_PATH | tar xf - -C $GAME_DIR ) 2>&1 | dialog --gauge "Restoring profile..." 6 50
+				chown -R $GAME_USER:$GAME_USER $GAME_DIR
+				clean_cache
+				echo $PROFILE_NAME > $BACKUPS_DIR/.last_restored
+				cd $WORK_DIR
+				clear
+			fi
+		fi
+	else
+		ERROR_TEXT="Called from: $SCRIPT_NAME\n\nThis function require two params\n\n1 - Directory path where are stored backups\n2 - Name  of backup"
+		log_error "$ERROR_TEXT"
+		show_error "$ERROR_TEXT"
+	fi
+
+}
